@@ -1,15 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   FolderKanban,
   UserPlus,
   Wrench,
   Code2,
+  LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { createClient } from "@/lib/supabase/client"
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -25,6 +27,14 @@ function isActive(pathname: string, href: string) {
 
 export function NavSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createClient()
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   return (
     <>
@@ -56,8 +66,15 @@ export function NavSidebar() {
             )
           })}
         </nav>
-        <div className="border-t p-4 text-xs text-muted-foreground">
-          Solo developer workspace
+        <div className="flex items-center justify-between border-t p-4">
+          <span className="text-xs text-muted-foreground">Solo developer workspace</span>
+          <button
+            onClick={handleLogout}
+            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            title="Sign out"
+          >
+            <LogOut className="size-4" />
+          </button>
         </div>
       </aside>
 
@@ -88,6 +105,13 @@ export function NavSidebar() {
               </Link>
             )
           })}
+          <button
+            onClick={handleLogout}
+            className="ml-auto flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          >
+            <LogOut className="size-4" />
+            Sign out
+          </button>
         </nav>
       </header>
     </>

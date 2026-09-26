@@ -66,7 +66,7 @@ function plusDaysISO(days: number) {
 export function AddProjectDialog({
   trigger,
 }: {
-  trigger?: React.ReactNode
+  trigger?: React.ReactElement
 }) {
   const router = useRouter()
   const { addProject } = useStore()

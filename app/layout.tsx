@@ -1,8 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { StoreProvider } from '@/lib/store'
-import { NavSidebar } from '@/components/nav-sidebar'
 import { Toaster } from '@/components/ui/sonner'
 
 export const metadata: Metadata = {
@@ -45,13 +43,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <StoreProvider>
-          <div className="flex min-h-screen bg-background">
-            <NavSidebar />
-            <main className="min-w-0 flex-1">{children}</main>
-          </div>
-          <Toaster />
-        </StoreProvider>
+        {children}
+        <Toaster />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
